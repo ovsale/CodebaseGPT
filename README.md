@@ -10,9 +10,6 @@ Fragment of the first system prompt:
 ```
 Project files with its descriptions:
 
-./codebasegpt/__init__.py
-File is empty
-
 ./codebasegpt/app.py
 The app.py file contains the main function that initializes the app state, performs
 initialization, description, and chat logic based on the app state.
