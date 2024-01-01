@@ -29,7 +29,7 @@ configurations, file paths, project state, and OpenAI integration.
 ...
 ```
 
-Also, the 🤖 bot can load any project file or search through the codebase (both semantically and textually) when needed to answer user questions. It can even update project files (with confirmation) upon user request. And, of course, it supports all programming languages.
+Also, 🤖 bot can load any project file or search through the codebase (both semantically and textually) when needed to answer user questions. It can even update project files (with confirmation) upon user request. And, of course, it supports all programming languages.
 
 ## Chat example
 Let's check CodebaseGPT code for external connectivity security. CodebaseGPT will explore its own code:
@@ -90,7 +90,7 @@ you would like me to check for, please let me know.
 Yes. 🤖 is correct.
 
 ## Installation
-1. Ensure python 3 is installed. App has been tested with 3.12
+1. Ensure python 3 is installed. App has been tested with 3.11
 ```
 python --version
 ```
