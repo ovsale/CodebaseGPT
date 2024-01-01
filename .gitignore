@@ -1,0 +1,13 @@
+_data/
+
+venv/
+
+__pycache__/
+
+.env
+
+.vscode/
+
+# OS generated files
+.DS_Store
+Thumbs.db

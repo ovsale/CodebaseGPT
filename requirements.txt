@@ -1,0 +1,10 @@
+openai
+python-dotenv
+wcmatch
+tiktoken
+scikit-learn
+pytest
+pydantic
+numpy
+chardet
+pathspec
