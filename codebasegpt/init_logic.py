@@ -29,13 +29,10 @@ def do_init(app_state: AppState) -> bool:
     print(f'Model to power chat with your code: {app_config.chat_model}')
 
     if first_run:
-        print()
-        print(f'You can change settings in {get_app_config_path()} file.')
-        print()
-        edit_app_config = input_yes_no('Do you like to change settings? [Y/n]: ')
+        print(f'\nYou can change settings in {get_app_config_path()} file.')
+        edit_app_config = input_yes_no('\nDo you like to change settings? [Y/n]: ')
         if not is_no(edit_app_config):
-            print()
-            print(f'Edit {get_app_config_path()} and RESTART app.')
+            print(f'\nEdit {get_app_config_path()} and RESTART app.')
             return False
 
     if app_config.proj_folder == '':
@@ -62,8 +59,7 @@ def do_init(app_state: AppState) -> bool:
     files = list_project_files(proj_config.path, proj_config.include, proj_config.exclude, gitignore)
     compute_sizes(proj_config.path, files, proj_config.remove_comments)
 
-    print('')
-    print('Files will be included:')
+    print('\nFiles will be included:')
     print_file_tree(files)
 
     project_stat = get_proj_stat(files)
@@ -86,11 +82,9 @@ def do_init(app_state: AppState) -> bool:
             'This can help lower OpenAI API costs and maintain response quality.'
         )
 
-    print()
-    cont_next = input_yes_no('Continue with this project settings? [Y/n]: ')
+    cont_next = input_yes_no('\nContinue with this project settings? [Y/n]: ')
     if is_no(cont_next):
-        print()
-        print(f'Edit {get_proj_config_path(app_config.proj_folder)} and RESTART app.')
+        print(f'\nEdit {get_proj_config_path(app_config.proj_folder)} and RESTART app.')
         return False
 
     app_state.app_config = app_config
@@ -103,8 +97,7 @@ def do_init(app_state: AppState) -> bool:
 def enter_project_path() -> str:
     project_path = ''
     while True:
-        print()
-        project_path = input('Enter project path: ')
+        project_path = input('\nEnter project path: ')
         if not is_folder_exist(project_path):
             print(f'Wrong project path: {project_path}')
             continue
@@ -136,8 +129,8 @@ def set_current_project(app_config: AppConfig, project_path: str) -> bool:
         ensure_folder(get_proj_data_folder(proj_folder))
         save_proj_config(proj_config, proj_folder)
 
-        print()
         print(
+            f'\n'
             f'Please EDIT the project configuration file: {get_proj_config_path(proj_folder)}.\n'
             f'\n'
             f'Specify the "include" and "exclude" fields with lists of glob patterns to determine which source folders '
