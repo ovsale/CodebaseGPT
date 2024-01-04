@@ -75,7 +75,7 @@ def do_init(app_state: AppState) -> bool:
         warnings.append('Warning: The total number of files > 500')
     if project_stat.total_size > 1000000:
         warnings.append('Warning: The total size of all files > 1 MB')
-    if project_stat.large_files and project_stat.large_files[0].size > 100000:
+    if project_stat.large_files and project_stat.large_files[0]["size"] > 100000:
         warnings.append('Warning: At least one file is larger than 100 KB')
     if warnings:
         print()
