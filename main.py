@@ -8,7 +8,7 @@ try:
     pass
 except KeyboardInterrupt:
     print("\nApp terminated")
-    sys.exit(0)
+    # sys.exit(0)
 
 print()
 
