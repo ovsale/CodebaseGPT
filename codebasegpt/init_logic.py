@@ -35,11 +35,10 @@ def do_init(app_state: AppState) -> bool:
             print(f'\nEdit {get_app_config_path()} and RESTART app.')
             return False
 
+    new_project = False
     if app_config.proj_folder == '':
         project_path = enter_project_path()
         new_project = set_current_project(app_config, project_path)
-        if new_project:
-            return False
     else:
         print()
         proj_config = load_proj_config(app_config.proj_folder)
@@ -47,9 +46,7 @@ def do_init(app_state: AppState) -> bool:
         if is_no(same_project):
             project_path = enter_project_path()
             new_project = set_current_project(app_config, project_path)
-            if new_project:
-                return False
-
+    
     proj_config = load_proj_config(app_config.proj_folder)
 
     gitignore = pathspec.PathSpec.from_lines('gitwildmatch', [])
@@ -78,13 +75,31 @@ def do_init(app_state: AppState) -> bool:
         for warning in warnings:
             print(warning)
         print(
-            'Consider to exclude more files if possible. '
+            '\nConsider to exclude more files if possible. '
             'This can help lower OpenAI API costs and maintain response quality.'
         )
 
     cont_next = input_yes_no('\nContinue with this project settings? [Y/n]: ')
     if is_no(cont_next):
-        print(f'\nEdit {get_proj_config_path(app_config.proj_folder)} and RESTART app.')
+        if new_project:
+            print(
+                f'\n'
+                f'Edit the project configuration file: {get_proj_config_path(app_config.proj_folder)}.\n'
+                f'\n'
+                f'Specify the "include" and "exclude" fields with lists of glob patterns to determine which source folders '
+                f'to include and which (test or resource) files to exclude.\n'
+                f'Example configuration:\n'
+                f'{{\n'
+                f'    "include": ["src/**/*"],\n'
+                f'    "exclude": ["src/test/**/*"]\n'
+                f'}}\n'
+                f'In this example, all files within the "src" directory are included, except for any files located '
+                f'within the "src/test" directory.\n'
+                f'\n'
+                f'After saving changes, RESTART this app.'
+            )
+        else:
+            print(f'\nEdit {get_proj_config_path(app_config.proj_folder)} and RESTART app.')
         return False
 
     app_state.app_config = app_config
@@ -128,23 +143,6 @@ def set_current_project(app_config: AppConfig, project_path: str) -> bool:
 
         ensure_folder(get_proj_data_folder(proj_folder))
         save_proj_config(proj_config, proj_folder)
-
-        print(
-            f'\n'
-            f'Please EDIT the project configuration file: {get_proj_config_path(proj_folder)}.\n'
-            f'\n'
-            f'Specify the "include" and "exclude" fields with lists of glob patterns to determine which source folders '
-            f'to include and which (test or resource) files to exclude.\n'
-            f'Example configuration:\n'
-            f'{{\n'
-            f'    "include": ["src/**/*"],\n'
-            f'    "exclude": ["src/test/**/*"]\n'
-            f'}}\n'
-            f'In this example, all files within the "src" directory are included, except for any files located '
-            f'within the "src/test" directory.\n'
-            f'\n'
-            f'After saving changes, RESTART this app.'
-        )
 
         new_project = True
 
