@@ -24,9 +24,12 @@ def do_init(app_state: AppState) -> bool:
         save_app_config(AppConfig())
 
     app_config = load_app_config()
-    print(f'App settings:')
-    print(f'Model to create file descriptions: {app_config.description_model}')
-    print(f'Model to power chat with your code: {app_config.chat_model}')
+    print(
+        f'\n'
+        f'App settings:\n'
+        f'Model to create file descriptions: {app_config.description_model}\n'
+        f'Model to power chat with your code: {app_config.chat_model}'
+    )
 
     if first_run:
         print(f'\nYou can change settings in {get_app_config_path()} file.')
