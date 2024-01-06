@@ -3,6 +3,8 @@ from wcmatch import glob
 import pathspec
 from typing import List
 
+from codebasegpt.pack_files import PackFiles
+
 from .file_node import FileNode
 from .proj_stat import ProjStat
 from .app_const import LARGE_SOURCE_FILE
@@ -156,4 +158,21 @@ def get_file_paths(nodes: list[FileNode], current_path: str = '') -> List[str]:
         else:
             file_paths.append(full_path)
     return file_paths
+
+
+def get_pack_files(files_data: list[FileNode], current_path: str = '') -> list[PackFiles]:
+    files_data2 = sorted(files_data, key=lambda node: (node.is_folder, node.name))
+    result : list[PackFiles] = []
+    packFiles = None
+    for node in files_data2:
+        if node.is_folder:
+            folder_path = f"{current_path}/{node.name}".lstrip('/')
+            result.extend(get_pack_files(node.folder_content, current_path=folder_path))
+        else:
+            if not packFiles:
+                packFiles = PackFiles(current_path, [])
+                result.append(packFiles)
+
+            packFiles.files.append(node.name)
+    return result
 
