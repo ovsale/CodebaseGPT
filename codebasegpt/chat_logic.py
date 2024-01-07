@@ -185,7 +185,7 @@ def get_sys_prompt2():
                   "You can search for files using 'find_files_semantic' function.\n"
                   "Also, you can search in files content using 'find_in_files' function.\n"
                   "You can also be asked to make changes in project: use update_file function to create new or update existing file.\n\n"
-                  "Project folders with contentaing files:\n"
+                  "Project folders with containing files:\n"
                   f"{proj_struct}\n")
     return sys_prompt
 
