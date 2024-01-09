@@ -52,10 +52,10 @@ def do_init(app_state: AppState) -> bool:
             new_project = set_current_project(app_config, project_path)
     
     proj_config = load_proj_config(app_config.proj_folder)
-    if proj_config.sys_prompt_mode != MODE_DESC \
-            and proj_config.sys_prompt_mode != MODE_DESC_NO \
-            and proj_config.sys_prompt_mode != MODE_DESC_2 :
-        print(f'ERROR: Wrong sys_prompt_mode value: {proj_config.sys_prompt_mode}')
+    if proj_config.desc_mode != MODE_DESC \
+            and proj_config.desc_mode != MODE_DESC_NO \
+            and proj_config.desc_mode != MODE_DESC_2 :
+        print(f'ERROR: Wrong sys_prompt_mode value: {proj_config.desc_mode}')
         return False
 
     gitignore = pathspec.PathSpec.from_lines('gitwildmatch', [])
@@ -150,7 +150,7 @@ def set_current_project(app_config: AppConfig, project_path: str) -> bool:
         proj_config.exclude = app_config.default_project_exclude
         proj_config.gitignore = app_config.default_project_gitignore
         proj_config.remove_comments = app_config.default_project_remove_comments
-        proj_config.sys_prompt_mode = app_config.default_project_sys_prompt_mode
+        proj_config.desc_mode = app_config.default_project_desc_mode
 
         ensure_folder(get_proj_data_folder(proj_folder))
         save_proj_config(proj_config, proj_folder)

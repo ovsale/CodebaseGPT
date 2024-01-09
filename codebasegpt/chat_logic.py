@@ -57,7 +57,7 @@ def do_chat(app_state_: AppState):
             'content': user_input
         })
 
-    sys_prompt = get_sys_prompt(app_state.proj_config.sys_prompt_mode)
+    sys_prompt = get_sys_prompt(app_state.proj_config.desc_mode)
 
     messages.append({
         'role': 'system',

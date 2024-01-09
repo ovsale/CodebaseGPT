@@ -8,4 +8,4 @@ class ProjConfig(BaseModel):
     exclude: list[str] = []
     gitignore: bool = True
     remove_comments: bool = False
-    sys_prompt_mode: str = app_config.MODE_DESC
+    desc_mode: str = app_config.MODE_DESC

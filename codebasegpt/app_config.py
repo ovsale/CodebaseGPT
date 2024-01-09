@@ -13,6 +13,6 @@ class AppConfig(BaseModel):
     default_project_exclude: list[str] = []
     default_project_gitignore: bool = True
     default_project_remove_comments: bool = False
-    default_project_sys_prompt_mode: str = MODE_DESC
+    default_project_desc_mode: str = MODE_DESC
     verbose_log: bool = False
 

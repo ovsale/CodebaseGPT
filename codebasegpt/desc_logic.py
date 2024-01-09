@@ -44,12 +44,12 @@ def do_desc(app_state: AppState) -> bool:
             file_state = FileState(path=file_path, mtime=mtime, desc='', desc2='', embed=None)
 
         content = None
-        if app_state.proj_config.sys_prompt_mode == app_config.MODE_DESC and file_state.desc == '' :
+        if app_state.proj_config.desc_mode == app_config.MODE_DESC and file_state.desc == '' :
             content = get_file_content(content, file_path, app_state)
             sys_prompt = get_sys_prompt(get_words(len(content)), os.path.basename(file_path))
             file_state.desc = gen_desc(app_state, sys_prompt, content)
 
-        if app_state.proj_config.sys_prompt_mode == app_config.MODE_DESC_2 and file_state.desc2 == '' :
+        if app_state.proj_config.desc_mode == app_config.MODE_DESC_2 and file_state.desc2 == '' :
             content = get_file_content(content, file_path, app_state)
             sys_prompt = get_sys_prompt2(get_words(len(content)) / 2)
             file_state.desc2 = gen_desc(app_state, sys_prompt, content)
