@@ -5,7 +5,8 @@ class FileState(BaseModel):
     path: str = ''
     mtime: int = 0
     desc: str = ''
-    embed: list[float] = []
+    desc2: str = ''
+    embed: list[float] | None = []
 
 
 class ProjState(BaseModel):

@@ -34,7 +34,6 @@ def do_chat(app_state_: AppState):
     messages = []
 
     def get_user_input():
-        # verbose_log('\n****************************************************************')
         nonlocal messages
         while True:
             print()
@@ -58,7 +57,7 @@ def do_chat(app_state_: AppState):
             'content': user_input
         })
 
-    sys_prompt = get_sys_prompt(app_state.app_config.sys_prompt_mode)
+    sys_prompt = get_sys_prompt(app_state.proj_config.sys_prompt_mode)
 
     messages.append({
         'role': 'system',
@@ -151,8 +150,10 @@ def verbose_log(text=''):
 def get_sys_prompt(sys_prompt_mode: str):
     if (sys_prompt_mode == app_config.MODE_DESC):
         return get_sys_prompt1()
-    if (sys_prompt_mode == app_config.MODE_NO_DESC):
+    if (sys_prompt_mode == app_config.MODE_DESC_NO):
         return get_sys_prompt2()
+    if (sys_prompt_mode == app_config.MODE_DESC_2):
+        return get_sys_prompt3()
     raise ValueError(f"wrong value: {sys_prompt_mode}")
 
 
@@ -199,6 +200,37 @@ def packs_to_string(packs: list[PackFiles]) -> list[str]:
     for pack in packs:
         result.append(f"\n./{pack.path}")
         result.extend([f"    {file}" for file in pack.files])
+    return result
+
+
+def get_sys_prompt3():
+    proj_struct = get_sys_context3(app_state.packs, app_state.proj_state.files)
+
+    proj_name = os.path.basename(app_state.proj_config.path)
+    sys_prompt = (f"You are the chat bot with task to answer user questions about \"{proj_name}\" software project.\n"
+                  "You find list of all project files with its descriptions below.\n"
+                  "If you need to load content for some file please use \"get_file\" function.\n"
+                  "You can search for files using 'find_files_semantic' function.\n"
+                  "Also, you can search in files content using 'find_in_files' function.\n"
+                  "You can also be asked to make changes in project: use update_file function to create new or update existing file.\n\n"
+                  "Project files with its descriptions:\n\n"
+                  f"{proj_struct}\n")
+    return sys_prompt
+
+
+def get_sys_context3(packs: list[PackFiles], files: list[FileState]):
+    return '\n'.join(packs_to_string3(packs, files))
+
+
+def packs_to_string3(packs: list[PackFiles], files: list[FileState]) -> list[str]:
+    result = []
+    for pack in packs:
+        result.append(f"\n./{pack.path}")
+        for file in pack.files:
+            file_path = os.path.join(pack.path, file)
+            file_state = next((f for f in files if f.path == file_path), None)
+            desc2 = file_state.desc2 if file_state else ''
+            result.append(f"    {file} - {desc2}")
     return result
 
 
@@ -308,8 +340,6 @@ def get_tools():
 
 
 def call_function(function_call):
-    # verbose_log('\n*** function call: ' + json.dumps(function_call, indent=4))
-
     args = json.loads(function_call.arguments)
     function_name = function_call.name
 
@@ -435,7 +465,7 @@ def find_in_files_func(query, is_case_sensitive, page):
 
     page_results = results[page * find_page_size: (page + 1) * find_page_size]
 
-    print_find_in_files_result(page_results, True)
+    print_find_in_files_result(page_results)
 
     return page_results
 
@@ -447,14 +477,13 @@ def line_matches(line, query, is_case_sensitive):
         return query.lower() in line.lower()
 
 
-def print_find_in_files_result(results, verbose_log):
+def print_find_in_files_result(results):
     print('result:')
     for file in results:
         print(file['path'])
 
-        if verbose_log:
-            for index, occurrence in enumerate(file['occurrences']):
-                print(f"     {occurrence}")
+        for index, occurrence in enumerate(file['occurrences']):
+            print(f"     {occurrence}")
 
     if not results:
         print('Nothing found')

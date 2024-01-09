@@ -2,6 +2,7 @@ import os
 import pathspec
 from typing import Optional
 
+from codebasegpt.app_config import MODE_DESC, MODE_DESC_NO, MODE_DESC_2
 from .app_config import AppConfig
 from .proj_config import ProjConfig
 from .app_const import data_root
@@ -27,7 +28,6 @@ def do_init(app_state: AppState) -> bool:
     print(
         f'\n'
         f'App settings:\n'
-        f'System prompt mode: {app_config.sys_prompt_mode}\n'
         f'Model to create file descriptions: {app_config.description_model}\n'
         f'Model to power chat with your code: {app_config.chat_model}'
     )
@@ -52,6 +52,11 @@ def do_init(app_state: AppState) -> bool:
             new_project = set_current_project(app_config, project_path)
     
     proj_config = load_proj_config(app_config.proj_folder)
+    if proj_config.sys_prompt_mode != MODE_DESC \
+            and proj_config.sys_prompt_mode != MODE_DESC_NO \
+            and proj_config.sys_prompt_mode != MODE_DESC_2 :
+        print(f'ERROR: Wrong sys_prompt_mode value: {proj_config.sys_prompt_mode}')
+        return False
 
     gitignore = pathspec.PathSpec.from_lines('gitwildmatch', [])
     if proj_config.gitignore:
@@ -145,6 +150,7 @@ def set_current_project(app_config: AppConfig, project_path: str) -> bool:
         proj_config.exclude = app_config.default_project_exclude
         proj_config.gitignore = app_config.default_project_gitignore
         proj_config.remove_comments = app_config.default_project_remove_comments
+        proj_config.sys_prompt_mode = app_config.default_project_sys_prompt_mode
 
         ensure_folder(get_proj_data_folder(proj_folder))
         save_proj_config(proj_config, proj_folder)

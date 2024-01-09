@@ -1,8 +1,11 @@
 from pydantic import BaseModel
 
+from codebasegpt import app_config
+
 class ProjConfig(BaseModel):
     path: str = ''
-    include: list[str] = []
+    include: list[str] = ['**/*']
     exclude: list[str] = []
-    gitignore: bool = False
+    gitignore: bool = True
     remove_comments: bool = False
+    sys_prompt_mode: str = app_config.MODE_DESC
