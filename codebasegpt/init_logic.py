@@ -10,7 +10,7 @@ from .app_state import AppState
 from .input_utils import input_yes_no, is_no
 from .init_utils import (
     compute_sizes, get_file_paths, get_proj_stat, list_project_files, load_gitignore, print_file_tree,
-    print_proj_stat, get_pack_files
+    print_proj_stat
 )
 from .utils import (
     ensure_folder, get_app_config_path, get_proj_config_path, get_proj_data_folder, load_app_config, load_proj_config,
@@ -114,7 +114,7 @@ def do_init(app_state: AppState) -> bool:
     app_state.app_config = app_config
     app_state.proj_config = proj_config
     app_state.file_paths = get_file_paths(files)
-    app_state.packs = get_pack_files(files)
+    # app_state.packs = get_pack_files(files)
 
     return True
 

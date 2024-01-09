@@ -10,6 +10,6 @@ class AppState:
     app_config: AppConfig = None
     proj_config: ProjConfig = None
     file_paths: list[str] = []
-    packs: list[PackFiles] = []
+    # packs: list[PackFiles] = []
     proj_state: ProjState = None
     openai: OpenAI = None
