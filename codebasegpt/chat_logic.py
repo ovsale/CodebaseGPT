@@ -147,14 +147,14 @@ def verbose_log(text=''):
         print(text)
 
 
-def get_sys_prompt(sys_prompt_mode: str):
-    if (sys_prompt_mode == app_config.MODE_DESC):
+def get_sys_prompt(desc_mode: str):
+    if (desc_mode == app_config.MODE_DESC):
         return get_sys_prompt1()
-    if (sys_prompt_mode == app_config.MODE_DESC_NO):
+    if (desc_mode == app_config.MODE_DESC_NO):
         return get_sys_prompt2()
-    if (sys_prompt_mode == app_config.MODE_DESC_2):
+    if (desc_mode == app_config.MODE_DESC_2):
         return get_sys_prompt3()
-    raise ValueError(f"wrong value: {sys_prompt_mode}")
+    raise ValueError(f"wrong value: {desc_mode}")
 
 
 def get_sys_prompt1():
