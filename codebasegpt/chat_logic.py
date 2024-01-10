@@ -3,7 +3,6 @@ import json
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 
-from codebasegpt.pack_files import PackFiles
 # from openai.types.chat import ChatCompletionMessage
 
 from .app_state import AppState
@@ -488,65 +487,6 @@ def get_message_tokens(message):
     if content is not None:
         return get_tokens_cnt(content)
     return 0
-
-
-# def get_sys_prompt2():
-#     proj_struct = get_sys_context2(app_state.packs)
-
-#     proj_name = os.path.basename(app_state.proj_config.path)
-#     sys_prompt = (f"You are the chat bot with task to answer user questions about \"{proj_name}\" software project.\n"
-#                   "You find list of all project folders with containing files below.\n"
-#                   "If you need to load content for some file please use \"get_file\" function.\n"
-#                   "You can search for files using 'find_files_semantic' function.\n"
-#                   "Also, you can search in files content using 'find_in_files' function.\n"
-#                   "You can also be asked to make changes in project: use update_file function to create new or update existing file.\n\n"
-#                   "Project folders with containing files:\n"
-#                   f"{proj_struct}\n")
-#     return sys_prompt
-
-
-# def get_sys_context2(packs: list[PackFiles]):
-#     return '\n'.join(packs_to_string(packs))
-
-
-# def packs_to_string(packs: list[PackFiles]) -> list[str]:
-#     result = []
-#     for pack in packs:
-#         result.append(f"\n./{pack.path}")
-#         result.extend([f"    {file}" for file in pack.files])
-#     return result
-
-
-# def get_sys_prompt3():
-#     proj_struct = get_sys_context3(app_state.packs, app_state.proj_state.files)
-
-#     proj_name = os.path.basename(app_state.proj_config.path)
-#     sys_prompt = (f"You are the chat bot with task to answer user questions about \"{proj_name}\" software project.\n"
-#                   "You find list of all project files with its descriptions below.\n"
-#                   "If you need to load content for some file please use \"get_file\" function.\n"
-#                   "You can search for files using 'find_files_semantic' function.\n"
-#                   "Also, you can search in files content using 'find_in_files' function.\n"
-#                   "You can also be asked to make changes in project: use update_file function to create new or update existing file.\n\n"
-#                   "Project files with its descriptions:\n\n"
-#                   f"{proj_struct}\n")
-#     return sys_prompt
-
-
-# def get_sys_context3(packs: list[PackFiles], files: list[FileState]):
-#     return '\n'.join(packs_to_string3(packs, files))
-
-
-# def packs_to_string3(packs: list[PackFiles], files: list[FileState]) -> list[str]:
-#     result = []
-#     for pack in packs:
-#         result.append(f"\n./{pack.path}")
-#         for file in pack.files:
-#             file_path = os.path.join(pack.path, file)
-#             file_state = next((f for f in files if f.path == file_path), None)
-#             desc2 = file_state.desc2 if file_state else ''
-#             result.append(f"    {file} - {desc2}")
-#     return result
-
 
 
 

@@ -70,7 +70,7 @@ def do_init(app_state: AppState) -> bool:
 
     project_stat = get_proj_stat(files)
     print()
-    print_proj_stat(project_stat)
+    print_proj_stat(project_stat, proj_config.remove_comments)
 
     warnings = []
     if project_stat.file_count > 500:
@@ -114,7 +114,6 @@ def do_init(app_state: AppState) -> bool:
     app_state.app_config = app_config
     app_state.proj_config = proj_config
     app_state.file_paths = get_file_paths(files)
-    # app_state.packs = get_pack_files(files)
 
     return True
 

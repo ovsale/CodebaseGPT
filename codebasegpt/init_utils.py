@@ -3,14 +3,13 @@ from wcmatch import glob
 import pathspec
 from typing import List
 
-from codebasegpt.pack_files import PackFiles
-
 from .file_node import FileNode
 from .proj_stat import ProjStat
 from .app_const import LARGE_SOURCE_FILE
-from .code_utils import remove_comments
+from codebasegpt import code_utils
 from .is_text_or_bin import is_text_file
 from .pretty_bytes import bytes_to_str
+from codebasegpt import token_utils
 
 
 def load_gitignore(root_path: str):
@@ -57,10 +56,10 @@ def build_file_tree(root_directory: str, directory: str, gitignore_spec: pathspe
             if not is_text_file(full_path):
                 continue
 
-            file_node = FileNode(entry, False, [], 0)
+            file_node = FileNode(entry, False, [], 0, 0)
             folder_content.append(file_node)
 
-    return FileNode(os.path.basename(directory), True, folder_content, 0)
+    return FileNode(os.path.basename(directory), True, folder_content, 0, 0)
 
 def my_fnmatch(name: str, pat: str) -> bool:
     # return fnmatch.fnmatch(name, pat)
@@ -89,20 +88,22 @@ def sort_file_data_alphabetically(files_data: list[FileNode]) -> list[FileNode]:
     return files_data
 
 
-def compute_sizes(base_path: str, files: list[FileNode], remove_comments_: bool, current_path: str = '') -> int:
+def compute_sizes(base_path: str, files: list[FileNode], remove_comments: bool, current_path: str = '') -> int:
     total_size = 0
     for file in files:
         full_path = os.path.join(base_path, current_path, file.name)
         if file.is_folder:
-            file.size = compute_sizes(base_path, file.folder_content, remove_comments_, os.path.join(current_path, file.name))
+            file.size = compute_sizes(base_path, file.folder_content, remove_comments, os.path.join(current_path, file.name))
         else:
-            if not remove_comments_:
+            if not remove_comments:
                 file.size = os.path.getsize(full_path)
+                file.tokens = int(file.size / 4.1)
             else:
                 with open(full_path, 'r', encoding='utf-8') as f:
                     content = f.read()
-                content = remove_comments(file.name, content)
-                file.size = len(content.encode('utf-8'))
+                content = code_utils.remove_comments(file.name, content)
+                file.size = len(content)
+                file.tokens = token_utils.get_tokens_cnt(content)
         total_size += file.size
     return total_size
 
@@ -120,6 +121,7 @@ def get_proj_stat(file_data: list[FileNode]) -> ProjStat:
     stats = ProjStat(
         file_count=0,
         total_size=0,
+        total_tokens=0,
         large_files=[]
     )
     def traverse_files(files: List[FileNode], current_path: str = ''):
@@ -130,6 +132,7 @@ def get_proj_stat(file_data: list[FileNode]) -> ProjStat:
             else:
                 stats.file_count += 1
                 stats.total_size += file.size
+                stats.total_tokens += file.tokens
                 if file.size > LARGE_SOURCE_FILE:
                     stats.large_files.append({'path': full_path, 'size': file.size})
     traverse_files(file_data)
@@ -137,10 +140,11 @@ def get_proj_stat(file_data: list[FileNode]) -> ProjStat:
     return stats
 
 
-def print_proj_stat(proj_stat: ProjStat):
+def print_proj_stat(proj_stat: ProjStat, remove_comments: bool):
     print('Project summary:')
     print(f'Total number of files: {proj_stat.file_count}')
     print(f'Total size of files: {bytes_to_str(proj_stat.total_size)}')
+    print(f'Total files tokens: {proj_stat.total_tokens}{"" if remove_comments else " (estimated)"}')
     print(f'Large files included (> {bytes_to_str(LARGE_SOURCE_FILE)}):')
     if not proj_stat.large_files:
         print('  No large files')
@@ -158,21 +162,3 @@ def get_file_paths(nodes: list[FileNode], current_path: str = '') -> List[str]:
         else:
             file_paths.append(full_path)
     return file_paths
-
-
-# def get_pack_files(files_data: list[FileNode], current_path: str = '') -> list[PackFiles]:
-#     files_data2 = sorted(files_data, key=lambda node: (node.is_folder, node.name))
-#     result : list[PackFiles] = []
-#     packFiles = None
-#     for node in files_data2:
-#         if node.is_folder:
-#             folder_path = f"{current_path}/{node.name}".lstrip('/')
-#             result.extend(get_pack_files(node.folder_content, current_path=folder_path))
-#         else:
-#             if not packFiles:
-#                 packFiles = PackFiles(current_path, [])
-#                 result.append(packFiles)
-
-#             packFiles.files.append(node.name)
-#     return result
-
