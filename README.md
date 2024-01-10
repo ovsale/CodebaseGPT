@@ -209,8 +209,8 @@ The desc_mode parameter sets the mode for creating and using of the file descrip
 - desc_2 - file descriptions are about half size as in the standard mode.
 - desc_no - descriptions are not created and used.
 
-Thus, desc_2 allows for a less detailed (but less token-consuming) description of the project. This mode can be useful when working with larger projects.
-In the desc_no case, file descriptions are not created at all, and in the first system prompt, the model receives just a list of files. Interestingly, for solving simple tasks, this mode also works quite well. That is, the model is capable of understanding the purpose of a file just by its name and the folder in which it is located, which is quite surprising.
+Thus, desc_2 allows for a less detailed (but less token-consuming) description of the project. This mode can be useful when working with larger projects.  
+In the desc_no case, file descriptions are not created at all, and in the first system prompt, the model receives just a list of files. Interestingly, for solving simple tasks, this mode also works quite well. That is, the model is capable of understanding the purpose of a file just by its name and the folder in which it is located, which is quite surprising.  
 These options are provided for research purposes.
 
 ## Commands
