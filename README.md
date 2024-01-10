@@ -139,6 +139,7 @@ Example of application configuration file:
     "default_project_exclude": [],
     "default_project_gitignore": true,
     "default_project_remove_comments": false,
+    "default_project_desc_mode": "desc",
     "verbose_log": false                        // detailed log
 }
 ```
@@ -155,7 +156,8 @@ Example of project configuration file when CodebaseGPT explores itself code:
     ],
     "exclude": [],      <- glob patterns to exclude
     "gitignore": true,
-    "remove_comments": true
+    "remove_comments": true,
+    "desc_mode": "desc"
 }
 ```
 
@@ -199,7 +201,17 @@ comments within the code files will be preserved during these operations.
 
 👤 You: 
 ```
-Yes. 🤖 is correct. If .gitignore file is present in project folder and "gitignore" is true - files and directories specified in the '.gitignore' file will be excluded from set of included (via "include") files. And when "remove_comments" is true files will be cleared from comments when loaded for any purpose. 
+Yes. 🤖 is correct. If .gitignore file is present in project folder and "gitignore" is true - files and directories specified in the '.gitignore' file will be excluded from set of included (via "include") files. And when "remove_comments" is true files will be cleared from comments when loaded for any purpose.
+
+## desc_mode
+The desc_mode parameter sets the mode for creating and using of the file descriptions of explored project. There are three values supported:
+- desc - the standard mode. The file description is approximately 10% of its size.
+- desc_2 - file descriptions are about half size as in the standard mode.
+- desc_no - descriptions are not created and used.
+
+Thus, desc_2 allows for a less detailed (but less token-consuming) description of the project. This mode can be useful when working with larger projects.
+In the desc_no case, file descriptions are not created at all, and in the first system prompt, the model receives just a list of files. Interestingly, for solving simple tasks, this mode also works quite well. That is, the model is capable of understanding the purpose of a file just by its name and the folder in which it is located, which is quite surprising.
+These options are provided for research purposes.
 
 ## Commands
 Lets ask CodebaseGPT about what commands it supports during chat phase:
@@ -242,7 +254,9 @@ user in interacting with the software project.
 Yes. 🤖 is correct.  
 For now CodebaseGPT supports two commands:
 - /exit - exits app
-- /clear - clears chat history. All messages but first system prompt (with list of all files with its descriptions) will be removed. It useful then you change chat subject and like to reduce cost. 
+- /clear - clears chat history. All messages but first system prompt (with list of all files with its descriptions) will be removed. It useful then you change chat subject and like to reduce cost.
+
+**Note: It is only way to remove messages and data from message history is /clear command and app restart. Automatic old message removal is not implemented for now.**
 
 ## Cost log explanation:
 ```
