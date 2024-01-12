@@ -133,8 +133,7 @@ Example of application configuration file:
     "description_model": "gpt-3.5-turbo-1106", <- model to create file descriptions. 3.5 is enough
     "chat_model": "gpt-4-1106-preview",        <- model to power chat. 3.5 is NOT enough 
     "default_project_include": [               <- default values for new project config
-        "README.md",
-        "package.json"
+        "**/*"
     ],
     "default_project_exclude": [],
     "default_project_gitignore": true,
@@ -256,7 +255,7 @@ For now CodebaseGPT supports two commands:
 - /exit - exits app
 - /clear - clears chat history. All messages but first system prompt (with list of all files with its descriptions) will be removed. It useful then you change chat subject and like to reduce cost.
 
-**Note: It is only way to remove messages and data from message history is /clear command and app restart. Automatic old message removal is not implemented for now.**
+**Note: It is only way to remove messages and data (source code) from message history is /clear command or app restart. Automatic old message removal is not implemented for now.**
 
 ## Cost log explanation:
 ```
