@@ -131,6 +131,7 @@ Example of application configuration file:
 {
     "proj_folder": "CodebaseGPT",          <- current project
     "description_model": "gpt-3.5-turbo-1106", <- model to create file descriptions. 3.5 is enough
+    "embedding_model": "text-embedding-ada-002", <- model to create file embeddings
     "chat_model": "gpt-4-1106-preview",        <- model to power chat. 3.5 is NOT enough 
     "default_project_include": [               <- default values for new project config
         "**/*"
