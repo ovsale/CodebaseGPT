@@ -15,7 +15,9 @@ def do_desc(app_state: AppState) -> bool:
     print("You can interrupt it (Ctrl-C) and then restart without losing results")
 
     load_dotenv()
-    app_state.openai = OpenAI()
+    app_state.openai = OpenAI(
+        base_url = app_state.app_config.base_url or None
+    )
 
     proj_state_path = utils.get_proj_state_path(app_state.app_config.proj_folder)
     if not os.path.exists(proj_state_path):

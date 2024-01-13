@@ -129,18 +129,19 @@ Example of application configuration file:
 **app_config.json**
 ```
 {
-    "proj_folder": "CodebaseGPT",          <- current project
-    "description_model": "gpt-3.5-turbo-1106", <- model to create file descriptions. 3.5 is enough
+    "proj_folder": "CodebaseGPT",                <- current project
+    "description_model": "gpt-3.5-turbo-1106",   <- model to create file descriptions. 3.5 is enough
     "embedding_model": "text-embedding-ada-002", <- model to create file embeddings
-    "chat_model": "gpt-4-1106-preview",        <- model to power chat. 3.5 is NOT enough 
-    "default_project_include": [               <- default values for new project config
+    "chat_model": "gpt-4-1106-preview",          <- model to power chat. 3.5 is NOT enough 
+    "base_url": "",                              <- custom url for OpenAI API, "" => default url
+    "default_project_include": [                 <- default values for new project config
         "**/*"
     ],
     "default_project_exclude": [],
     "default_project_gitignore": true,
     "default_project_remove_comments": false,
     "default_project_desc_mode": "desc",
-    "verbose_log": false                        // detailed log
+    "verbose_log": false                         <- detailed log
 }
 ```
 Example of project configuration file when CodebaseGPT explores itself code:  
