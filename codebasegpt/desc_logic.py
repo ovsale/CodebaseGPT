@@ -142,7 +142,7 @@ def gen_embed(app_state : AppState, content : str) -> list[float] :
     content2 = token_utils.limit_string(content, 8000)
     print('Generating embedding, waiting for model response...')
     embed_response = app_state.openai.embeddings.create(
-        model="text-embedding-ada-002",
+        model=app_state.app_config.embedding_model,
         input=[content2]
     )
     print('Done')

@@ -8,6 +8,7 @@ MODE_DESC_2 = "desc_2"
 class AppConfig(BaseModel):
     proj_folder: str = ''
     description_model: str = 'gpt-3.5-turbo-1106'
+    embedding_model: str = 'text-embedding-ada-002'
     chat_model: str = 'gpt-4-1106-preview'
     default_project_include: list[str] = ['**/*']
     default_project_exclude: list[str] = []

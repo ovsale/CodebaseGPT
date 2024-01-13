@@ -29,6 +29,7 @@ def do_init(app_state: AppState) -> bool:
         f'\n'
         f'App settings:\n'
         f'Model to create file descriptions: {app_config.description_model}\n'
+        f'Model to create file embeddings: {app_config.embedding_model}\n'
         f'Model to power chat with your code: {app_config.chat_model}'
     )
 
