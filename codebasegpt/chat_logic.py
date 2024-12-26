@@ -373,7 +373,7 @@ def find_files_semantic_func(query, page):
 
     print('\ngenerating embedding for query...')
     embed_response = app_state.openai.embeddings.create(
-        model="text-embedding-ada-002",
+        model=app_state.app_config.embedding_model,
         input=[query]
     )
     print('done')
